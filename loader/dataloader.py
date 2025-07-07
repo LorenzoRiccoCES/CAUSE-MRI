@@ -7,7 +7,8 @@ from torch.utils.data import DataLoader
 from torch.utils.data import Dataset
 from torchvision.datasets.cityscapes import Cityscapes
 from torchvision.datasets import VOCSegmentation
-
+import nibabel as nib
+import torch
 
 from utils.utils import *
 
@@ -31,6 +32,13 @@ def dataloader(args, no_ddp_train_shuffle=True):
     elif args.dataset == "coco171":
         args.n_classes = 171
         get_transform = get_cococity_transform
+    elif args.dataset == "brain_mri":
+        train_dataset = CroppedMRIDataset(args.data_dir, 'train')
+        test_dataset = CroppedMRIDataset(args.data_dir, 'val')
+        train_loader = DataLoader(train_dataset, args.batch_size, shuffle=True, num_workers=args.num_workers)
+        test_loader = DataLoader(test_dataset, args.batch_size, shuffle=False, num_workers=args.num_workers)
+        sampler = None
+        return train_loader, test_loader, sampler
 
     # train dataset
     train_dataset = ContrastiveSegDataset(
@@ -661,4 +669,26 @@ class ContrastiveSegDataset(Dataset):
         }
 
         return ret
+
+class CroppedMRIDataset(Dataset):
+    def __init__(self, root, split, transform=None):
+        self.img_dir = os.path.join(root, 'img', split)
+        self.label_dir = os.path.join(root, 'label', split)
+        self.img_files = sorted(os.listdir(self.img_dir))
+        self.label_files = sorted(os.listdir(self.label_dir))
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.img_files)
+
+    def __getitem__(self, idx):
+        img_path = os.path.join(self.img_dir, self.img_files[idx])
+        label_path = os.path.join(self.label_dir, self.label_files[idx])
+        img = nib.load(img_path).get_fdata()  # [C, D, H, W]
+        label = nib.load(label_path).get_fdata()  # [D, H, W] or [1, D, H, W]
+        img = torch.from_numpy(img).float()
+        label = torch.from_numpy(label).long()
+        if self.transform:
+            img, label = self.transform(img, label)
+        return {'img': img, 'label': label}
 

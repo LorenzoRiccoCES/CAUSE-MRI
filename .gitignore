@@ -13,3 +13,12 @@ test_category_tr.py
 crop.py
 */__pycache__
 __pycache__
+data/
+venv/
+.DS_Store
+*.pyc
+*.pkl
+*.npy
+*.pt
+*.log
+*.nii.gz

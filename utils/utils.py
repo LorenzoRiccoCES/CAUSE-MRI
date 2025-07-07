@@ -5,6 +5,7 @@ import torchvision
 import matplotlib
 import matplotlib.pyplot as plt
 from multiprocessing import Pool
+import torch.nn.functional as F
 
 invTrans = transforms.Compose([transforms.Normalize(mean=[0., 0., 0.],
                                                     std=[1 / 0.229, 1 / 0.224, 1 / 0.225]),
@@ -241,7 +242,6 @@ from scipy.optimize import linear_sum_assignment
 import pydensecrf.densecrf as dcrf
 import pydensecrf.utils as utils
 import torch
-import torch.nn.functional as F
 import torchvision.transforms.functional as VF
 
 def dense_crf(image_tensor: torch.FloatTensor, output_logits: torch.FloatTensor, max_iter: int):
@@ -356,3 +356,25 @@ def get_pascal_transform(res, is_label):
     else:
         return transforms.Compose([transforms.Resize((res, res), interpolation=InterpolationMode.NEAREST),
                           transforms.ToTensor()])
+
+# logits: [B, C, D, H, W]
+# labels: [B, D, H, W]
+
+# Option 1: Direct (recommended if all voxels are valid)
+loss = F.cross_entropy(logits, labels)
+
+# Option 2: Flatten for masking or custom loss
+logits_flat = logits.permute(0, 2, 3, 4, 1).reshape(-1, logits.shape[1])  # [N, C]
+labels_flat = labels.reshape(-1)  # [N]
+
+# Optionally, mask out invalid voxels (e.g., background=-1)
+mask = labels_flat != -1
+loss = F.cross_entropy(logits_flat[mask], labels_flat[mask])
+
+# features: [B, D, H, W, F] or [B, F, D, H, W]
+# If [B, F, D, H, W], permute to [B, D, H, W, F]
+if features.shape[1] == feature_dim:  # [B, F, D, H, W]
+    features = features.permute(0, 2, 3, 4, 1)  # [B, D, H, W, F]
+
+B, D, H, W, F = features.shape
+features_flat = features.reshape(B, D * H * W, F)  # [B, P, F]

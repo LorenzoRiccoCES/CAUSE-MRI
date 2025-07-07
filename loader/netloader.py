@@ -90,23 +90,27 @@ def load_model(ckpt, rank=0):
         import models.ibotvit as model
     elif name == "msn":
         import models.msnvit as model
+    elif name == "swinunetr":
+        import models.swin_unetr as model
     else:
-        raise ValueError
+        raise ValueError(f"Unknown model name: {name}")
 
-    net = getattr(model, arch)()
-    checkpoint = torch.load(ckpt, map_location=torch.device(f'cuda:{rank}'))
-    if name == "mae":
-        msg = net.load_state_dict(checkpoint["model"], strict=False)
-    elif name == "dino":
-        msg = net.load_state_dict(checkpoint, strict=False)
-    elif name == "dinov2":
-        msg = net.load_state_dict(checkpoint, strict=False)
-    elif name == "ibot":
-        msg = net.load_state_dict(checkpoint['state_dict'], strict=False)
-    elif name == "msn":
-        msg = checkpoint_module(checkpoint['target_encoder'], net)
-
-    # check incompatible layer or variables
-    rprint(msg, rank)
+    if name == "swinunetr":
+        net = getattr(model, arch)(pretrained_weights=ckpt)
+    else:
+        net = getattr(model, arch)()
+        checkpoint = torch.load(ckpt, map_location=torch.device(f'cuda:{rank}'))
+        if name == "mae":
+            msg = net.load_state_dict(checkpoint["model"], strict=False)
+        elif name == "dino":
+            msg = net.load_state_dict(checkpoint, strict=False)
+        elif name == "dinov2":
+            msg = net.load_state_dict(checkpoint, strict=False)
+        elif name == "ibot":
+            msg = net.load_state_dict(checkpoint['state_dict'], strict=False)
+        elif name == "msn":
+            msg = checkpoint_module(checkpoint['target_encoder'], net)
+        # check incompatible layer or variables
+        rprint(msg, rank)
 
     return net

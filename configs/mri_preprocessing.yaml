@@ -1,0 +1,25 @@
+# MRI Preprocessing Configuration Template
+modalities:
+  - flair
+  - t1
+  - t1ce
+  - t2
+spacing: [1.0, 1.0, 1.0]
+crop_size: [96, 96, 96]
+window_size: [96, 96, 96]
+intensity:
+  a_min: 0
+  a_max: 3000
+  b_min: 0.0
+  b_max: 1.0
+  clip: true
+augmentation:
+  flip_prob: 0.5
+  rotate90_prob: 0.5
+  gaussian_noise_prob: 0.2
+  gaussian_noise_std: 0.1
+sliding_window:
+  enabled: false
+  window_size: [96, 96, 96]
+cache_rate: 0.0
+num_workers: 4 

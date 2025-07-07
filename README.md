@@ -324,3 +324,29 @@ unzip cocostuff.zip && unzip cityscapes.zip
 ```
 
 ---
+
+## 🧠 Swin UNETR for 3D MRI Segmentation (MONAI)
+
+This repository now supports 3D MRI segmentation using the Swin UNETR architecture from MONAI.
+
+### Requirements
+- `monai` (see requirements.txt)
+
+### Usage
+- Place your self-supervised pretrained Swin UNETR weights locally (e.g., `checkpoint/swinunetr_base.pth`).
+- Name your checkpoint file with the prefix `swinunetr_` (e.g., `swinunetr_base.pth`) so the loader can recognize it.
+- The loader will automatically use the Swin UNETR model for 3D MRI volumes if the checkpoint name starts with `swinunetr`.
+
+#### Example
+```python
+from loader.netloader import load_model
+net = load_model('checkpoint/swinunetr_base.pth')
+```
+
+- The model expects 3D MRI volumes as input (shape: `[B, C, D, H, W]`).
+- The output is a 3D segmentation mask.
+
+#### Customization
+You can customize Swin UNETR parameters by editing the factory function in `models/swin_unetr.py`.
+
+---
