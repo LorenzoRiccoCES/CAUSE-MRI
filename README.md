@@ -1,7 +1,7 @@
 
 # ***Self-Supervised Vision Transformer and Causal Inference for MRI semantic segmentation***
 
-This is pytorch implementation code for *CAusal Unsupervised Semantic sEgmentation (CAUSE)* to improve performance of unsupervised semantic segmentation, adapted in order to handle 3D MR images using Swin UNETE architecture from MONAI. 
+This is pytorch implementation code for *CAusal Unsupervised Semantic sEgmentation (CAUSE)* to improve performance of unsupervised semantic segmentation, adapted in order to handle 3D MR images using Swin UNETR architecture from MONAI. 
 
 This code is further developed by three baseline codes of [HP: Leveraging Hidden Positives for Unsupervised Semantic Segmentation](https://github.com/hynnsk/HP) accepted in [CVPR 2023](https://openaccess.thecvf.com/content/CVPR2023/papers/Seong_Leveraging_Hidden_Positives_for_Unsupervised_Semantic_Segmentation_CVPR_2023_paper.pdf)
 and [STEGO: Unsupervised Semantic Segmentation by Distilling Feature Correspondences](https://github.com/mhamilton723/STEGO) accepted in [ICLR 2022](https://iclr.cc/virtual/2022/poster/6068).
@@ -148,3 +148,4 @@ net = load_model('checkpoint/swinunetr_base.pth')
 You can customize Swin UNETR parameters by editing the factory function in `models/swin_unetr.py`.
 
 ---
+
