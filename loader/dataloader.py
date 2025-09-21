@@ -595,7 +595,7 @@ class ContrastiveSegDataset(Dataset):
         self.normalize = transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 
 
-        # cityscapes, cocostuff27 
+    
         if  dataset_name == "cityscapes" and crop_type is None:
             dataset_class = CityscapesSeg
             extra_args = dict()
@@ -691,4 +691,5 @@ class CroppedMRIDataset(Dataset):
         if self.transform:
             img, label = self.transform(img, label)
         return {'img': img, 'label': label}
+
 
