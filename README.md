@@ -36,9 +36,10 @@ Credit to BK Lee (https://github.com/ByungKwanLee?tab=repositories) for the orig
     ├── utils
     │   └── utils.py                    # Utility for auxiliary tools
     │
-    ├── crop_mri_dataset.py             # Crop of the dataset
+    ├── crop_mri_dataset.py             # Crop of the MRI dataset
+    ├── crop_dataset.py                 # Crop of the dataset
     |
-    ├── train_modularity.py             # (STEP 1) [MLP & TR] Generating Concept Cluster Book as a Mediator
+    ├── train_mediator.py               # (STEP 1) [MLP & TR] Generating Concept Cluster Book as a Mediator
     │
     ├── train_front_door_mlp.py         # (STEP 2) [MLP] Frontdoor Adjustment through Unsupervised Semantic Segmentation
     ├── fine_tuning_mlp.py              # (STEP 3) [MLP] Fine-Tuning Cluster Probe
@@ -136,6 +137,7 @@ net = load_model('checkpoint/swinunetr_base.pth')
 You can customize Swin UNETR parameters by editing the factory function in `models/swin_unetr.py`.
 
 ---
+
 
 
 
