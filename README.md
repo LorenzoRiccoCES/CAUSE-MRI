@@ -9,20 +9,6 @@ and [CAUSE: Causal Unsupervised Semantic Segmentation](https://github.com/ByungK
 
 ---
 
-You can download the checkpoint files on [DINO](https://openaccess.thecvf.com/content/ICCV2021/papers/Caron_Emerging_Properties_in_Self-Supervised_Vision_Transformers_ICCV_2021_paper.pdf), [DINOv2](https://arxiv.org/pdf/2304.07193.pdf), [iBOT](https://openreview.net/pdf?id=ydopy-e6Dg), [MSN](https://www.ecva.net/papers/eccv_2022/papers_ECCV/papers/136910442.pdf), [MAE](https://openaccess.thecvf.com/content/CVPR2022/papers/He_Masked_Autoencoders_Are_Scalable_Vision_Learners_CVPR_2022_paper.pdf), [Swin-UNETR](https://arxiv.org/pdf/2201.01266) in self-supervised vision transformer framework.
-
-If you want to download the pretrained models of DINO in various structures the following CAUSE uses,
-you can download them in the following links:
-
-* [DINO](https://github.com/facebookresearch/dino), ICCV 2021
-* [DINOv2](https://github.com/facebookresearch/dinov2), ArXiv 2023
-* [iBOT](https://github.com/bytedance/ibot), ICLR 2022
-* [MSN](https://github.com/facebookresearch/msn), ECCV 2022
-* [MAE](https://github.com/facebookresearch/mae), CVPR 2022
-* [Swin-UNETR](https://github.com/Project-MONAI/research-contributions/tree/main/SwinUNETR/Pretrain), ArXiv 2022
-
----
-
 ## 🤖 CAUSE Framework (Top-Level File Directory Layout) 
     .
     ├── loader
@@ -148,4 +134,5 @@ net = load_model('checkpoint/swinunetr_base.pth')
 You can customize Swin UNETR parameters by editing the factory function in `models/swin_unetr.py`.
 
 ---
+
 
